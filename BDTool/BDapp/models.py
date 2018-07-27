@@ -7,19 +7,6 @@ class Technology(models.Model):
     def __str__(self):
         return self.technology_name
 
-class Project(models.Model):
-    project_name=models.CharField(max_length=50)
-    url_name=models.CharField(max_length=100)
-    domain_name=models.CharField(max_length=100)
-    project_desrciption=models.CharField(max_length=1000)
-    attachment=models.ImageField(blank=True,null=True)
-    technology=models.ManyToManyField(Technology, related_name='technology')
-    # datend time we want to add
-    def __str__(self):
-        return self.project_name
-
-    class Meta:
-        ordering=('project_name',)
 
 class Client(models.Model):
     first_name=models.CharField(max_length=50)
@@ -28,8 +15,24 @@ class Client(models.Model):
     email=models.EmailField(unique=True)
     country=models.CharField(max_length=50)
     phone_no=models.IntegerField(default=0)
-    project=models.ForeignKey(Project, on_delete=models.CASCADE,related_name='project',blank=True,null=True)
     active =models.BooleanField(default=True)
 
     def __str__(self):
         return self.first_name
+
+
+class Project(models.Model):
+    project_name=models.CharField(max_length=50)
+    url_name=models.CharField(max_length=100)
+    domain_name=models.CharField(max_length=100)
+    project_desrciption=models.CharField(max_length=1000)
+    attachment=models.ImageField(blank=True,null=True)
+    technology=models.ManyToManyField(Technology, related_name='technology')
+    client=models.ForeignKey(Client,on_delete=models.CASCADE,null=True,blank=True)
+    # datend time we want to add
+    def __str__(self):
+        return self.project_name
+
+    class Meta:
+        ordering=('project_name',)
+
